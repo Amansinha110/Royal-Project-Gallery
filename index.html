@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Project Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --royal-purple: #4a154b;
+            --deep-blue: #001f3f;
+            --gold: #d4af37;
+            --light-gold: #f1e6b2;
+            --velvet-black: #0a0a0a;
+            --cream: #f8f5f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--velvet-black) 100%);
+            color: var(--cream);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234a154b" opacity="0.2"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23d4af37" stroke-width="1" stroke-opacity="0.1"/></svg>');
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--royal-purple), var(--deep-blue));
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border-bottom: 3px solid var(--gold);
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--gold), transparent, var(--gold));
+        }
+        
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            color: var(--light-gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 0.5rem;
+        }
+        
+        .tab {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--light-gold);
+            padding: 0.8rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .tab.active {
+            background: var(--royal-purple);
+            border: 1px solid var(--gold);
+            border-bottom: none;
+            transform: translateY(1px);
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(212, 175, 55, 0.25);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .project-card {
+            background: rgba(10, 10, 10, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.3);
+            border-color: var(--gold);
+        }
+        
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--royal-purple), var(--gold));
+        }
+        
+        .project-image {
+            height: 180px;
+            background: linear-gradient(45deg, var(--deep-blue), var(--royal-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-image i {
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.4);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            font-family: 'Cinzel', serif;
+            color: var(--light-gold);
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .project-description {
+            color: var(--cream);
+            opacity: 0.85;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .project-link {
+            display: inline-block;
+            background: linear-gradient(to right, var(--royal-purple), var(--deep-blue));
+            color: var(--light-gold);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gold);
+        }
+        
+        .project-link:hover {
+            background: linear-gradient(to right, var(--deep-blue), var(--royal-purple));
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .project-link i {
+            margin-left: 0.5rem;
+        }
+        
+        .admin-panel {
+            background: rgba(10, 10, 10, 0.8);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        .admin-panel h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--light-gold);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            position: relative;
+        }
+        
+        .admin-panel h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 3px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-gold);
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            background: rgba(10, 10, 10, 0.5);
+            color: var(--cream);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--gold), #b8860b);
+            color: var(--velvet-black);
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #b8860b, var(--gold));
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .projects-list {
+            margin-top: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .projects-list h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--light-gold);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .project-item {
+            background: rgba(10, 10, 10, 0.6);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .project-actions button {
+            background: transparent;
+            border: none;
+            color: var(--light-gold);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .project-actions button:hover {
+            color: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        footer p {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                margin-bottom: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .project-actions {
+                margin-top: 1rem;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Royal Project Gallery</h1>
+        <p class="subtitle">A prestigious showcase of exceptional work curated with royal elegance</p>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="projects">Projects Showcase</div>
+            <div class="tab" data-tab="admin">Admin Panel</div>
+        </div>
+        
+        <div id="projects" class="tab-content active">
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Royal Portfolio</h3>
+                        <p class="project-description">A majestic portfolio website showcasing regal designs and noble achievements with elegant styling.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Jewel E-Commerce</h3>
+                        <p class="project-description">An exquisite e-commerce platform for royal jewels and luxury accessories with seamless user experience.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Castle Booking</h3>
+                        <p class="project-description">A reservation system for historic castles and palaces with elegant UI and booking management.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Royal Theater</h3>
+                        <p class="project-description">Event management platform for royal theaters with performance scheduling and ticket booking.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Historical Archives</h3>
+                        <p class="project-description">Digital library of royal documents and historical artifacts with advanced search capabilities.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-chess-king"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Strategy Game</h3>
+                        <p class="project-description">A royal strategy game with historical battles and kingdom management features.</p>
+                        <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="admin" class="tab-content">
+            <div class="admin-panel">
+                <h2>Project Management</h2>
+                
+                <form id="project-form">
+                    <div class="form-group">
+                        <label for="project-title">Project Title</label>
+                        <input type="text" id="project-title" placeholder="Enter project title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-description">Description</label>
+                        <textarea id="project-description" placeholder="Enter project description" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-link">Project URL</label>
+                        <input type="url" id="project-link" placeholder="https://example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-icon">Icon (Font Awesome class)</label>
+                        <input type="text" id="project-icon" placeholder="fas fa-icon" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-full">Add Project</button>
+                </form>
+                
+                <div class="projects-list">
+                    <h3>Existing Projects</h3>
+                    
+                    <div class="project-item">
+                        <div class="project-info">
+                            <h4>Royal Portfolio</h4>
+                            <p>https://royalportfolio.example.com</p>
+                        </div>
+                        <div class="project-actions">
+                            <button title="Edit"><i class="fas fa-edit"></i></button>
+                            <button title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="project-info">
+                            <h4>Jewel E-Commerce</h4>
+                            <p>https://royaljewels.example.com</p>
+                        </div>
+                        <div class="project-actions">
+                            <button title="Edit"><i class="fas fa-edit"></i></button>
+                            <button title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item">
+                        <div class="project-info">
+                            <h4>Castle Booking</h4>
+                            <p>https://royalcastles.example.com</p>
+                        </div>
+                        <div class="project-actions">
+                            <button title="Edit"><i class="fas fa-edit"></i></button>
+                            <button title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 Royal Project Gallery | Designed with Regal Elegance</p>
+    </footer>
+    
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Form submission
+        document.getElementById('project-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const title = document.getElementById('project-title').value;
+            const description = document.getElementById('project-description').value;
+            const link = document.getElementById('project-link').value;
+            const icon = document.getElementById('project-icon').value;
+            
+            // Create project card
+            const projectCard = document.createElement('div');
+            projectCard.className = 'project-card';
+            projectCard.innerHTML = `
+                <div class="project-image">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">${title}</h3>
+                    <p class="project-description">${description}</p>
+                    <a href="${link}" class="project-link" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                </div>
+            `;
+            
+            // Add to projects grid
+            document.querySelector('.projects-grid').appendChild(projectCard);
+            
+            // Create project item for admin list
+            const projectItem = document.createElement('div');
+            projectItem.className = 'project-item';
+            projectItem.innerHTML = `
+                <div class="project-info">
+                    <h4>${title}</h4>
+                    <p>${link}</p>
+                </div>
+                <div class="project-actions">
+                    <button title="Edit"><i class="fas fa-edit"></i></button>
+                    <button title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            
+            // Add to projects list
+            document.querySelector('.projects-list').appendChild(projectItem);
+            
+            // Reset form
+            this.reset();
+            
+            // Show success message
+            alert('Project added successfully!');
+        });
+        
+        // Delete project functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.fa-trash')) {
+                if (confirm('Are you sure you want to delete this project?')) {
+                    const projectItem = e.target.closest('.project-item');
+                    projectItem.remove();
+                    
+                    // In a real app, we would also remove the corresponding card from showcase
+                }
+            }
+        });
+        
+        // Edit project functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.fa-edit')) {
+                const projectItem = e.target.closest('.project-item');
+                const title = projectItem.querySelector('h4').textContent;
+                const link = projectItem.querySelector('p').textContent;
+                
+                // Populate form with existing values
+                document.getElementById('project-title').value = title;
+                document.getElementById('project-link').value = link;
+                
+                // Focus on title field
+                document.getElementById('project-title').focus();
+                
+                // Change button text to "Update"
+                document.querySelector('#project-form button').textContent = 'Update Project';
+                
+                // In a real app, we would handle the update functionality
+            }
+        });
+    </script>
+</body>
+</html>
